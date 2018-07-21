@@ -64,8 +64,8 @@ void MainWindow::getALLExcelProperties()
     temp.clear();
     temp<<"姓名"<<"病历号"<<"病人类型"<<"性别"<<"年"<<"龄"<<"送检日期"<<"操作员"<<"报告日期"<<"标本"<<"BUN"<<"CREA"<<"UA"<<"ALT"<<"AST"<<"AST/ALT"<<"GGT"<<"TBIL"<<"DBIL"<<"IDBIL"<<"TP"<<"ALB"<<"GLO"<<"A/G"<<"CHOL"<<"TG"<<"HDL"<<"LDL";
     properties.push_back(temp);
-//    chinese<<"尿素氮"<<"肌酐"<<"尿酸"<<"谷丙转氨酶"<<"谷草转氨酶"<<"谷丙谷草比值/"<<"谷氨酸氨基转移酶"<<"总胆红素"<<"直接胆红素"<<"间接胆红素 "<<"总蛋白"<<"白蛋白"<<"球蛋白"<<"白球比值/"<<"总胆固醇"<<"甘油三酯"<<"高密度脂蛋白"<<"低密度脂蛋白";
-//    partName<<"基本情况"<<"第一部分        问卷部分          第一部分        问卷部分"<<"第二部分  传统形态观察类表型         第二部分  传统形态观察类表型      第二部分  传统形态观察类表型"<<"第三部分1          头面部测量                      第三部分1          头面部测量"<<"第三部分2   肢体测量     第三部分2  肢体测量"<<"第三部分3 体围测量     第三部3分 体围测量"<<"遗传学观察目标";
+    chinese<<"尿素氮"<<"肌酐"<<"尿酸"<<"谷丙转氨酶"<<"谷草转氨酶"<<"谷丙谷草比值/"<<"谷氨酸氨基转移酶"<<"总胆红素"<<"直接胆红素"<<"间接胆红素 "<<"总蛋白"<<"白蛋白"<<"球蛋白"<<"白球比值/"<<"总胆固醇"<<"甘油三酯"<<"高密度脂蛋白"<<"低密度脂蛋白";
+    partName<<"基本情况"<<"第一部分        问卷部分          第一部分        问卷部分"<<"第二部分  传统形态观察类表型         第二部分  传统形态观察类表型      第二部分  传统形态观察类表型"<<"第三部分1          头面部测量                      第三部分1          头面部测量"<<"第三部分2   肢体测量     第三部分2  肢体测量"<<"第三部分3 体围测量     第三部3分 体围测量"<<"遗传学观察目标";
     filePath[0]="体质人类学表型特征录入文件.xlsx";
     filePath[1]="骨密度.xlsx";
     filePath[2]="体成分.xlsx";
@@ -126,48 +126,48 @@ void MainWindow::merge()
     QAxObject* pWorksheet = pWorkbook->querySubObject("WorkSheets(int)",1);//打开第一个sheet
 
     /*合并单元格*/
-//    QAxObject* merge_range = pWorksheet->querySubObject("Range(const QString)","A1:k1");
-//    QAxObject* interior = merge_range->querySubObject("Interior");
-//    interior->setProperty("Color",QColor(127,255,212));
-//    merge_range->setProperty("MergeCells",true);
-//    merge_range->dynamicCall("SetValue(const QVariant&)",QVariant(partName[0]));
+    QAxObject* merge_range = pWorksheet->querySubObject("Range(const QString)","A1:k1");
+    QAxObject* interior = merge_range->querySubObject("Interior");
+    interior->setProperty("Color",QColor(127,255,212));
+    merge_range->setProperty("MergeCells",true);
+    merge_range->dynamicCall("SetValue(const QVariant&)",QVariant(partName[0]));
 
 
-//    merge_range = pWorksheet->querySubObject("Range(const QString)","L1:AM1");
-//    interior = merge_range->querySubObject("Interior");
-//    interior->setProperty("Color",QColor(186,85,211));
-//    merge_range->setProperty("MergeCells",true);
-//    merge_range->dynamicCall("SetValue(const QVariant&)",QVariant(partName[1]));
+    merge_range = pWorksheet->querySubObject("Range(const QString)","L1:AM1");
+    interior = merge_range->querySubObject("Interior");
+    interior->setProperty("Color",QColor(186,85,211));
+    merge_range->setProperty("MergeCells",true);
+    merge_range->dynamicCall("SetValue(const QVariant&)",QVariant(partName[1]));
 
-//    merge_range = pWorksheet->querySubObject("Range(const QString)","AN1:BO1");
-//    interior = merge_range->querySubObject("Interior");
-//    interior->setProperty("Color",QColor(192,192,192));
-//    merge_range->setProperty("MergeCells",true);
-//    merge_range->dynamicCall("SetValue(const QVariant&)",QVariant(partName[2]));
+    merge_range = pWorksheet->querySubObject("Range(const QString)","AN1:BO1");
+    interior = merge_range->querySubObject("Interior");
+    interior->setProperty("Color",QColor(192,192,192));
+    merge_range->setProperty("MergeCells",true);
+    merge_range->dynamicCall("SetValue(const QVariant&)",QVariant(partName[2]));
 
-//    merge_range = pWorksheet->querySubObject("Range(const QString)","BP1:CO1");
-//    interior = merge_range->querySubObject("Interior");
-//    interior->setProperty("Color",QColor(255,255,0));
-//    merge_range->setProperty("MergeCells",true);
-//    merge_range->dynamicCall("SetValue(const QVariant&)",QVariant(partName[3]));
+    merge_range = pWorksheet->querySubObject("Range(const QString)","BP1:CO1");
+    interior = merge_range->querySubObject("Interior");
+    interior->setProperty("Color",QColor(255,255,0));
+    merge_range->setProperty("MergeCells",true);
+    merge_range->dynamicCall("SetValue(const QVariant&)",QVariant(partName[3]));
 
-//    merge_range = pWorksheet->querySubObject("Range(const QString)","CP1:DM1");
-//    interior = merge_range->querySubObject("Interior");
-//    interior->setProperty("Color",QColor(0,255,255));
-//    merge_range->setProperty("MergeCells",true);
-//    merge_range->dynamicCall("SetValue(const QVariant&)",QVariant(partName[4]));
+    merge_range = pWorksheet->querySubObject("Range(const QString)","CP1:DM1");
+    interior = merge_range->querySubObject("Interior");
+    interior->setProperty("Color",QColor(0,255,255));
+    merge_range->setProperty("MergeCells",true);
+    merge_range->dynamicCall("SetValue(const QVariant&)",QVariant(partName[4]));
 
-//    merge_range = pWorksheet->querySubObject("Range(const QString)","DN1:EG1");
-//    interior = merge_range->querySubObject("Interior");
-//    interior->setProperty("Color",QColor(192,192,192));
-//    merge_range->setProperty("MergeCells",true);
-//    merge_range->dynamicCall("SetValue(const QVariant&)",QVariant(partName[5]));
+    merge_range = pWorksheet->querySubObject("Range(const QString)","DN1:EG1");
+    interior = merge_range->querySubObject("Interior");
+    interior->setProperty("Color",QColor(192,192,192));
+    merge_range->setProperty("MergeCells",true);
+    merge_range->dynamicCall("SetValue(const QVariant&)",QVariant(partName[5]));
 
-//    merge_range = pWorksheet->querySubObject("Range(const QString)","FA1:FI1");
-//    interior = merge_range->querySubObject("Interior");
-//    interior->setProperty("Color",QColor(192,192,192));
-//    merge_range->setProperty("MergeCells",true);
-//    merge_range->dynamicCall("SetValue(const QVariant&)",QVariant(partName[6]));
+    merge_range = pWorksheet->querySubObject("Range(const QString)","FA1:FI1");
+    interior = merge_range->querySubObject("Interior");
+    interior->setProperty("Color",QColor(192,192,192));
+    merge_range->setProperty("MergeCells",true);
+    merge_range->dynamicCall("SetValue(const QVariant&)",QVariant(partName[6]));
 
     QList<QVariant> headList;//汇总表表头
 
@@ -177,9 +177,9 @@ void MainWindow::merge()
         for(int j=0;j<properties[i].length();j++)
             headList<<properties[i][j];
     }
-//    QAxObject* range = pWorksheet->querySubObject("Range(const QString)","KG1:KX1");
-//    range->dynamicCall("SetValue(const QVariant&)",QVariant(chinese));
-    QAxObject* range = pWorksheet->querySubObject("Range(const QString)","A1:KX1");
+    QAxObject* range = pWorksheet->querySubObject("Range(const QString)","KG1:KX1");
+    range->dynamicCall("SetValue(const QVariant&)",QVariant(chinese));
+    range = pWorksheet->querySubObject("Range(const QString)","A2:KX2");
     range->dynamicCall("SetValue(const QVariant&)",QVariant(headList));
 
     /*将四个表的数据导入*/
@@ -243,31 +243,31 @@ void MainWindow::merge()
     sort(transport.begin(),transport.end(),cmp);
     /*将所有在transpo暂存的数据转换格式存入汇总表相应分区*/
     int newRows = transport.length();
-    range = pWorksheet->querySubObject("Range(const QString )","A2:KX"+QString::number(1+newRows));
+    range = pWorksheet->querySubObject("Range(const QString )","A3:KX"+QString::number(2+newRows));
     range->setProperty("Value", castListListVariant2Variant(transport));
 //    qDebug()<<"合并时的res长度:"<<2+newRows;
 
     /*格式*/
-    range = pWorksheet->querySubObject("Range(const QString )","G2:G"+QString::number(1+newRows));
+    range = pWorksheet->querySubObject("Range(const QString )","G3:G"+QString::number(2+newRows));
     range->dynamicCall("SetNumberFormatLocal", "##################");
-    range = pWorksheet->querySubObject("Range(const QString )","FO2:FO"+QString::number(1+newRows));
+    range = pWorksheet->querySubObject("Range(const QString )","FO3:FO"+QString::number(2+newRows));
     range->dynamicCall("SetNumberFormatLocal", "##################");
-    range = pWorksheet->querySubObject("Range(const QString )","GJ2:GJ"+QString::number(1+newRows));
+    range = pWorksheet->querySubObject("Range(const QString )","GJ3:GJ"+QString::number(2+newRows));
     range->dynamicCall("SetNumberFormatLocal", "##################");
 
-    range = pWorksheet->querySubObject("Range(const QString )","H2:I"+QString::number(1+newRows));
+    range = pWorksheet->querySubObject("Range(const QString )","H3:I"+QString::number(2+newRows));
     range->setProperty("NumberFormatLocal", "yyyy/m/d");
-    range = pWorksheet->querySubObject("Range(const QString )","FM2:FM"+QString::number(1+newRows));
+    range = pWorksheet->querySubObject("Range(const QString )","FM3:FM"+QString::number(2+newRows));
     range->setProperty("NumberFormatLocal", "yyyy/m/d");
-    range = pWorksheet->querySubObject("Range(const QString )","GH2:GH"+QString::number(1+newRows));
+    range = pWorksheet->querySubObject("Range(const QString )","GH3:GH"+QString::number(2+newRows));
     range->setProperty("NumberFormatLocal", "yyyy/m/d");
-    range = pWorksheet->querySubObject("Range(const QString )","KC2:KC"+QString::number(1+newRows));
+    range = pWorksheet->querySubObject("Range(const QString )","KC3:KC"+QString::number(2+newRows));
     range->setProperty("NumberFormatLocal", "yyyy/m/d");
-    range = pWorksheet->querySubObject("Range(const QString )","KE2:KE"+QString::number(1+newRows));
+    range = pWorksheet->querySubObject("Range(const QString )","KE3:KE"+QString::number(2+newRows));
     range->setProperty("NumberFormatLocal", "yyyy/m/d");
-    range = pWorksheet->querySubObject("Range(const QString )","FU2:FV"+QString::number(1+newRows));
+    range = pWorksheet->querySubObject("Range(const QString )","FU3:FV"+QString::number(2+newRows));
     range->setProperty("NumberFormatLocal", "yyyy/m/d hh:mm");
-    range = pWorksheet->querySubObject("Range(const QString )","GP2:GQ"+QString::number(1+newRows));
+    range = pWorksheet->querySubObject("Range(const QString )","GP3:GQ"+QString::number(2+newRows));
     range->setProperty("NumberFormatLocal", "yyyy/m/d hh:mm");
 
 
@@ -313,7 +313,7 @@ void MainWindow::addTo()
     QList<QList<QVariant>> Res = mergedExcel.getRes();
 //    qDebug()<<"已有res的长度:"<<Res.length();
     keyword.clear();
-    for(int i=1;i<Res.length();i++)
+    for(int i=2;i<Res.length();i++)
     {
 //        qDebug()<<QVariant(Res[i][1]).toString();
         keyword.insert(Res[i][1],i);
@@ -398,7 +398,7 @@ void MainWindow::addTo()
     {
         Res.push_back(transport[i]);
     }
-    sort(Res.begin()+1,Res.end(),cmp);
+    sort(Res.begin()+2,Res.end(),cmp);
     int newRows = Res.length();
     QAxObject* pExcel = new QAxObject("Excel.Application");
     QAxObject* pWorkbooks = pExcel->querySubObject("WorkBooks"); //获取工作簿
@@ -408,26 +408,26 @@ void MainWindow::addTo()
     range->setProperty("Value", castListListVariant2Variant(Res));
 
     /*格式*/
-    range = pWorksheet->querySubObject("Range(const QString )","G2:G"+QString::number(newRows));
+    range = pWorksheet->querySubObject("Range(const QString )","G3:G"+QString::number(newRows));
     range->dynamicCall("SetNumberFormatLocal", "##################");
-    range = pWorksheet->querySubObject("Range(const QString )","FO2:FO"+QString::number(newRows));
+    range = pWorksheet->querySubObject("Range(const QString )","FO3:FO"+QString::number(newRows));
     range->dynamicCall("SetNumberFormatLocal", "##################");
-    range = pWorksheet->querySubObject("Range(const QString )","GJ2:GJ"+QString::number(newRows));
+    range = pWorksheet->querySubObject("Range(const QString )","GJ3:GJ"+QString::number(newRows));
     range->dynamicCall("SetNumberFormatLocal", "##################");
 
-    range = pWorksheet->querySubObject("Range(const QString )","H2:I"+QString::number(newRows));
+    range = pWorksheet->querySubObject("Range(const QString )","H3:I"+QString::number(newRows));
     range->setProperty("NumberFormatLocal", "yyyy/m/d");
-    range = pWorksheet->querySubObject("Range(const QString )","FM2:FM"+QString::number(newRows));
+    range = pWorksheet->querySubObject("Range(const QString )","FM3:FM"+QString::number(newRows));
     range->setProperty("NumberFormatLocal", "yyyy/m/d");
-    range = pWorksheet->querySubObject("Range(const QString )","GH2:GH"+QString::number(newRows));
+    range = pWorksheet->querySubObject("Range(const QString )","GH3:GH"+QString::number(newRows));
     range->setProperty("NumberFormatLocal", "yyyy/m/d");
-    range = pWorksheet->querySubObject("Range(const QString )","KC2:KC"+QString::number(newRows));
+    range = pWorksheet->querySubObject("Range(const QString )","KC3:KC"+QString::number(newRows));
     range->setProperty("NumberFormatLocal", "yyyy/m/d");
-    range = pWorksheet->querySubObject("Range(const QString )","KE2:KE"+QString::number(newRows));
+    range = pWorksheet->querySubObject("Range(const QString )","KE3:KE"+QString::number(newRows));
     range->setProperty("NumberFormatLocal", "yyyy/m/d");
-    range = pWorksheet->querySubObject("Range(const QString )","FU2:FV"+QString::number(newRows));
+    range = pWorksheet->querySubObject("Range(const QString )","FU3:FV"+QString::number(newRows));
     range->setProperty("NumberFormatLocal", "yyyy/m/d hh:mm");
-    range = pWorksheet->querySubObject("Range(const QString )","GP2:GQ"+QString::number(newRows));
+    range = pWorksheet->querySubObject("Range(const QString )","GP3:GQ"+QString::number(newRows));
     range->setProperty("NumberFormatLocal", "yyyy/m/d hh:mm");
 
 

@@ -32,7 +32,7 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>40</x>
@@ -48,7 +48,7 @@
         <bool>true</bool>
        </property>
        <property name="text">
-        <string>导出</string>
+        <string>汇总</string>
        </property>
        <property name="checkable">
         <bool>false</bool>
