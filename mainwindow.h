@@ -35,7 +35,7 @@ private:
     int start[4] = {0,165,186,282};
     int end[4]={164,185,281,309};
     int keywordPos[4]={1,0,0,1};//关键字在各表字段中的位置
-    int firstData[4]={2,1,1,1};//第一条有效数据所在行号
+    int firstData[4]={2,1,1,2};//第一条有效数据所在行号
     int namePos[4]={2,1,1,0};//姓名所在位置
     QString savePath = "C:\\excel\\汇总.xlsx"; //汇总表存储位置
 //    QMap<QString,QTableWidget*> tableW;

@@ -107,7 +107,7 @@ void MainWindow::merge()
     {
         QMessageBox* box = new QMessageBox;
         box->setWindowTitle("Notice");
-        box->setText("数据已存在，请点击追加");
+        box->setText("汇总文件已存在，请点击追加");
         box->show();
         return;
     }
@@ -278,7 +278,7 @@ void MainWindow::merge()
 
     QMessageBox* box = new QMessageBox;
     box->setWindowTitle("Notice");
-    box->setText("导出完成!");
+    box->setText("汇总完成!");
     box->show();
 
     ui->pushButton->setEnabled(true);
@@ -298,7 +298,7 @@ void MainWindow::addTo()
     {
         QMessageBox* box = new QMessageBox;
         box->setWindowTitle("Notice");
-        box->setText("原始汇总文件不存在！");
+        box->setText("原始汇总文件不存在,请点击汇总.");
         box->show();
         return;
     }
