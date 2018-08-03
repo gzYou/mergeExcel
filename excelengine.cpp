@@ -331,7 +331,6 @@ bool ExcelEngine::ReadDataToTable(QTableWidget *tableWidget)
 
     }
 
-
     return true;
 }
 

@@ -6,6 +6,7 @@
 #include <QString>
 #include <QStringList>
 #include <QFileDialog>
+#include <QTableWidget>
 #include<algorithm>
 #include<QList>
 using namespace std;
@@ -21,11 +22,11 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(ui->addTo,SIGNAL(clicked()),this,SLOT(addTo()));
 
 
-//    QObject::connect(ui->checkBox,SIGNAL(stateChanged(int)),this,SLOT(display(int)));
-//    QObject::connect(ui->checkBox_2,SIGNAL(stateChanged(int)),this,SLOT(display(int)));
-//    QObject::connect(ui->checkBox_3,SIGNAL(stateChanged(int)),this,SLOT(display(int)));
-//    QObject::connect(ui->checkBox_4,SIGNAL(stateChanged(int)),this,SLOT(display(int)));
-//    QObject::connect(ui->checkBox_5,SIGNAL(stateChanged(int)),this,SLOT(display(int)));
+    QObject::connect(ui->checkBox,SIGNAL(stateChanged(int)),this,SLOT(display(int)));
+    QObject::connect(ui->checkBox_2,SIGNAL(stateChanged(int)),this,SLOT(display(int)));
+    QObject::connect(ui->checkBox_3,SIGNAL(stateChanged(int)),this,SLOT(display(int)));
+    QObject::connect(ui->checkBox_4,SIGNAL(stateChanged(int)),this,SLOT(display(int)));
+    QObject::connect(ui->checkBox_5,SIGNAL(stateChanged(int)),this,SLOT(display(int)));
 }
 
 MainWindow::~MainWindow()
@@ -66,21 +67,6 @@ void MainWindow::getALLExcelProperties()
     properties.push_back(temp);
     chinese<<"尿素氮"<<"肌酐"<<"尿酸"<<"谷丙转氨酶"<<"谷草转氨酶"<<"谷丙谷草比值/"<<"谷氨酸氨基转移酶"<<"总胆红素"<<"直接胆红素"<<"间接胆红素 "<<"总蛋白"<<"白蛋白"<<"球蛋白"<<"白球比值/"<<"总胆固醇"<<"甘油三酯"<<"高密度脂蛋白"<<"低密度脂蛋白";
     partName<<"基本情况"<<"第一部分        问卷部分          第一部分        问卷部分"<<"第二部分  传统形态观察类表型         第二部分  传统形态观察类表型      第二部分  传统形态观察类表型"<<"第三部分1          头面部测量                      第三部分1          头面部测量"<<"第三部分2   肢体测量     第三部分2  肢体测量"<<"第三部分3 体围测量     第三部3分 体围测量"<<"遗传学观察目标";
-    filePath[0]="体质人类学表型特征录入文件.xlsx";
-    filePath[1]="骨密度.xlsx";
-    filePath[2]="体成分.xlsx";
-    filePath[3]="检验数据.xlsx";
-    filePath[4]="汇总.xlsx";
-//    tableW.insert("体质人类学表型特征录入文件",ui->tableWidget);
-//    tableW.insert("骨密度",ui->tableWidget_2);
-//    tableW.insert("体成分",ui->tableWidget_3);
-//    tableW.insert("检验数据",ui->tableWidget_4);
-//    tableW.insert("汇总数据",ui->tableWidget_5);
-//    tabIndex.insert("体质人类学表型特征录入文件",0);
-//    tabIndex.insert("骨密度",1);
-//    tabIndex.insert("体成分",2);
-//    tabIndex.insert("检验数据",3);
-//    tabIndex.insert("汇总数据",4);
 }
 
 /*将QList<QList<QVariant>>数据类型的数据转换为QVariant类型的数据
@@ -445,33 +431,88 @@ void MainWindow::addTo()
 /*数据浏览
  * display()
 */
-//void MainWindow::display(int state)
-//{
-//    QCheckBox *act=qobject_cast<QCheckBox*>(sender());//使用Qt的类型转换，将指针恢复为QAction类型
-//    QString fileName = ((QCheckBox*)act)->text();
-//    QString address =  "C:\\excel\\"+filePath[tabIndex[fileName]];
-//    QFile f(address);
-//    if(state == Qt::Checked)
-//    {
-//        if(!f.exists())
-//        {
-//            QMessageBox* box = new QMessageBox;
-//            box->setWindowTitle("Notice");
-//            box->setText("文件不存在！");
-//            box->show();
-//            return;
-//        }
-//        ui->tabWidget->setTabText(tabIndex[fileName],act->text());
-//        ExcelEngine excel(address);
-//        excel.Open();
-//        excel.ReadDataToTable(tableW[fileName]);
-//        excel.Close();
-//    }
-//    if(state == Qt::Unchecked)
-//    {
-//        tableW[fileName]->clear();
-//        tableW[fileName]->setColumnCount(0);
-//        tableW[fileName]->setRowCount(0);
-//        ui->tabWidget->setTabText(tabIndex[fileName],"");
-//    }
-//}
+/*void MainWindow::display(int state)
+{
+    QCheckBox *act=qobject_cast<QCheckBox*>(sender());//使用Qt的类型转换，将指针恢复为QAction类型
+    QString fileName = ((QCheckBox*)act)->text();
+    QString address =  "C:\\excel\\"+filePath[tabIndex[fileName]];
+    QFile f(address);
+    if(state == Qt::Checked)
+    {
+        if(!f.exists())
+        {
+            QMessageBox* box = new QMessageBox;
+            box->setWindowTitle("Notice");
+            box->setText("文件不存在！");
+            box->show();
+            return;
+        }
+        ui->tabWidget->setTabText(tabIndex[fileName],act->text());
+        ExcelEngine excel(address);
+        excel.Open();
+        excel.ReadDataToTable(tableW[fileName]);
+        excel.Close();
+    }
+    if(state == Qt::Unchecked)
+    {
+        tableW[fileName]->clear();
+        tableW[fileName]->setColumnCount(0);
+        tableW[fileName]->setRowCount(0);
+        ui->tabWidget->setTabText(tabIndex[fileName],"");
+    }
+}
+*/
+
+void MainWindow::display(int state)
+{
+    QCheckBox *act=qobject_cast<QCheckBox*>(sender());//使用Qt的类型转换，将指针恢复为QAction类型
+    QString fileName = ((QCheckBox*)act)->text();
+    qDebug()<<fileName;
+    QString address =  "C:\\excel\\"+fileName+".xlsx";
+    QFile f(address);
+
+    if(state == Qt::Checked)
+    {
+        if(!f.exists())
+        {
+            QMessageBox* box = new QMessageBox;
+            box->setWindowTitle("Notice");
+            box->setText("文件不存在！");
+            box->show();
+            act->setCheckState(Qt::Unchecked);
+            return;
+        }
+
+        QTableWidget *tableWidget = new QTableWidget();
+        ExcelEngine excel(address);
+        excel.Open();
+        excel.ReadDataToTable(tableWidget);
+        excel.Close();
+        tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+
+        ui->tabWidget->insertTab(0,tableWidget,fileName);
+        file.insert(0,fileName);
+        fileIndex.insert(fileName,0);
+        for(int i = 1;i<file.length();i++)
+        {
+            fileIndex[file[i]] += 1;
+        }
+        ui->tabWidget->setCurrentIndex(0);
+
+    }
+    else
+    {
+        if(fileIndex.find(fileName) == fileIndex.end()) return;
+        ui->tabWidget->removeTab(fileIndex[fileName]);
+        int index = file.indexOf(fileName);
+        for(int i = index + 1;i<file.length();i++)
+        {
+            fileIndex[file[i]] -=1;
+        }
+        file.removeAt(index);
+        fileIndex.remove(fileName);
+
+    }
+}
+

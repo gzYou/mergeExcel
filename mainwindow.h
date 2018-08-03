@@ -24,7 +24,7 @@ private slots:
     void merge();
     void addTo();
 
-//    void display(int state);
+    void display(int state);
 private:
     Ui::MainWindow *ui;
     QList<QList<QString>> properties; //保存各Excel表字段.properties[0]-体质人类学表型特征录入文件;properties[1]-骨密度;properties[2]-体成分;properties[3]-检验数据
@@ -38,8 +38,8 @@ private:
     int firstData[4]={2,1,1,2};//第一条有效数据所在行号
     int namePos[4]={2,1,1,0};//姓名所在位置
     QString savePath = "C:\\excel\\汇总.xlsx"; //汇总表存储位置
-//    QMap<QString,QTableWidget*> tableW;
-//    QMap<QString,int> tabIndex;
+    QMap<QString,int> fileIndex;
+    QList<QString> file;
 };
 
 #endif // MAINWINDOW_H
