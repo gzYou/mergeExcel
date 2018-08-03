@@ -67,6 +67,12 @@ void MainWindow::getALLExcelProperties()
     properties.push_back(temp);
     chinese<<"尿素氮"<<"肌酐"<<"尿酸"<<"谷丙转氨酶"<<"谷草转氨酶"<<"谷丙谷草比值/"<<"谷氨酸氨基转移酶"<<"总胆红素"<<"直接胆红素"<<"间接胆红素 "<<"总蛋白"<<"白蛋白"<<"球蛋白"<<"白球比值/"<<"总胆固醇"<<"甘油三酯"<<"高密度脂蛋白"<<"低密度脂蛋白";
     partName<<"基本情况"<<"第一部分        问卷部分          第一部分        问卷部分"<<"第二部分  传统形态观察类表型         第二部分  传统形态观察类表型      第二部分  传统形态观察类表型"<<"第三部分1          头面部测量                      第三部分1          头面部测量"<<"第三部分2   肢体测量     第三部分2  肢体测量"<<"第三部分3 体围测量     第三部3分 体围测量"<<"遗传学观察目标";
+    filePath[0]="体质人类学表型特征录入文件.xlsx";
+    filePath[1]="骨密度.xlsx";
+    filePath[2]="体成分.xlsx";
+    filePath[3]="检验数据.xlsx";
+    filePath[4]="汇总.xlsx";
+
 }
 
 /*将QList<QList<QVariant>>数据类型的数据转换为QVariant类型的数据
@@ -100,7 +106,7 @@ void MainWindow::merge()
     ui->pushButton->setEnabled(false);
     QApplication::processEvents();
 
-
+    keyword.clear();
     keyword.insert(QVariant("test"),-1);
     qDebug()<<savePath;
     QAxObject* pExcel = new QAxObject("Excel.Application");//连接Excel控件
@@ -484,10 +490,11 @@ void MainWindow::display(int state)
         }
 
         QTableWidget *tableWidget = new QTableWidget();
-        ExcelEngine excel(address);
-        excel.Open();
-        excel.ReadDataToTable(tableWidget);
-        excel.Close();
+        ExcelEngine* excel = new ExcelEngine(address);
+        excel->Open();
+        excel->ReadDataToTable(tableWidget);
+        excel->Close();
+        delete excel;
         tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
 
