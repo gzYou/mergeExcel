@@ -6,7 +6,6 @@
 #include <QString>
 #include <QStringList>
 #include <QFileDialog>
-#include <QTableWidget>
 #include<algorithm>
 #include<QList>
 using namespace std;
@@ -72,7 +71,16 @@ void MainWindow::getALLExcelProperties()
     filePath[2]="体成分.xlsx";
     filePath[3]="检验数据.xlsx";
     filePath[4]="汇总.xlsx";
-
+//    tableW.insert("体质人类学表型特征录入文件",ui->tableWidget);
+//    tableW.insert("骨密度",ui->tableWidget_2);
+//    tableW.insert("体成分",ui->tableWidget_3);
+//    tableW.insert("检验数据",ui->tableWidget_4);
+//    tableW.insert("汇总数据",ui->tableWidget_5);
+//    tabIndex.insert("体质人类学表型特征录入文件",0);
+//    tabIndex.insert("骨密度",1);
+//    tabIndex.insert("体成分",2);
+//    tabIndex.insert("检验数据",3);
+//    tabIndex.insert("汇总数据",4);
 }
 
 /*将QList<QList<QVariant>>数据类型的数据转换为QVariant类型的数据
@@ -200,9 +208,15 @@ void MainWindow::merge()
                 int pos = keyword[res[j][keywordPos[i]]]-1;
 //                qDebug()<<"存在"<<res[j][keywordPos[i]]<<",位于"<<keyword[res[j][keywordPos[i]]];
                 //range = pWorksheet->querySubObject("Range(const QString )", start[i]+QString::number(pos)+":"+end[i]+QString::number(pos));//定位到插入位置
-                for(int k=0;k<res[j].length();k++)
+                for(int k=0;k<cols_eachFile[i];k++)
                 {
-                    transport[pos][k+start[i]] = res[j][k];
+                    if( k == identIndex[i])
+                    {
+                        transport[pos][k+start[i]] = "'"+QVariant(res[j][k]).toString();
+                    }
+                    else
+                        transport[pos][k+start[i]] = res[j][k];
+
                 }
 
 
@@ -215,9 +229,14 @@ void MainWindow::merge()
                 {
                     tempLine<<"";
                 }
-                for(int k=0;k<res[j].length();k++)
+                for(int k=0;k<cols_eachFile[i];k++)
                 {
-                    tempLine<<res[j][k];
+                    if(k == identIndex[i])
+                    {
+                       tempLine<<("'"+QVariant(res[j][k]).toString());
+                    }
+                    else
+                        tempLine<<res[j][k];
                 }
                 for(int k=end[i]+1;k<310;k++)
                 {
@@ -240,12 +259,12 @@ void MainWindow::merge()
 //    qDebug()<<"合并时的res长度:"<<2+newRows;
 
     /*格式*/
-    range = pWorksheet->querySubObject("Range(const QString )","G3:G"+QString::number(2+newRows));
-    range->dynamicCall("SetNumberFormatLocal", "##################");
-    range = pWorksheet->querySubObject("Range(const QString )","FO3:FO"+QString::number(2+newRows));
-    range->dynamicCall("SetNumberFormatLocal", "##################");
-    range = pWorksheet->querySubObject("Range(const QString )","GJ3:GJ"+QString::number(2+newRows));
-    range->dynamicCall("SetNumberFormatLocal", "##################");
+//    range = pWorksheet->querySubObject("Range(const QString )","G3:G"+QString::number(2+newRows));
+//    range->dynamicCall("SetNumberFormatLocal", QVariant("@"));
+//    range = pWorksheet->querySubObject("Range(const QString )","FO3:FO"+QString::number(2+newRows));
+//    range->dynamicCall("SetNumberFormatLocal", QVariant("@"));
+//    range = pWorksheet->querySubObject("Range(const QString )","GJ3:GJ"+QString::number(2+newRows));
+//    range->dynamicCall("SetNumberFormatLocal", QVariant("@"));
 
     range = pWorksheet->querySubObject("Range(const QString )","H3:I"+QString::number(2+newRows));
     range->setProperty("NumberFormatLocal", "yyyy/m/d");
@@ -303,11 +322,13 @@ void MainWindow::addTo()
     mergedExcel.Open();
     mergedExcel.castVariant2ListListVariant();
     QList<QList<QVariant>> Res = mergedExcel.getRes();
-//    qDebug()<<"已有res的长度:"<<Res.length();
     keyword.clear();
     for(int i=2;i<Res.length();i++)
     {
 //        qDebug()<<QVariant(Res[i][1]).toString();
+        Res[i][6]="'"+QVariant(Res[i][6]).toString();
+        Res[i][170]="'"+QVariant(Res[i][170]).toString();
+        Res[i][191]="'"+QVariant(Res[i][191]).toString();
         keyword.insert(Res[i][1],i);
     }
     mergedExcel.Close();
@@ -342,10 +363,16 @@ void MainWindow::addTo()
                 if(keywordAdded[res[j][keywordPos[i]]]) //如果该keyword已经存在，在所在行对应分区补入数据
                 {
                     int pos = keywordAdded[res[j][keywordPos[i]]]-1;
-                    for(int k=0;k<res[j].length();k++)
+                    for(int k=0;k<cols_eachFile[i];k++)
                     {
-                        transport[pos][k+start[i]] = res[j][k];
+                        if( k == identIndex[i])
+                        {
+                            transport[pos][k+start[i]] = "'"+QVariant(res[j][k]).toString();
+                        }
+                        else
+                            transport[pos][k+start[i]] = res[j][k];
                     }
+
 
 
                 }
@@ -356,9 +383,14 @@ void MainWindow::addTo()
                     {
                         tempLine<<"";
                     }
-                    for(int k=0;k<res[j].length();k++)
+                    for(int k=0;k<cols_eachFile[i];k++)
                     {
-                        tempLine<<res[j][k];
+                        if(k == identIndex[i])
+                        {
+                           tempLine<<("'"+QVariant(res[j][k]).toString());
+                        }
+                        else
+                            tempLine<<res[j][k];
                     }
                     for(int k=end[i]+1;k<310;k++)
                     {
@@ -374,9 +406,15 @@ void MainWindow::addTo()
                 int pos = keyword[res[j][keywordPos[i]]];
                 if(QVariant(Res[pos][start[i]+namePos[i]]).toString()=="")//该源文件在汇总文件中的对应分区空白，则补录
                 {
-                    for(int k=0;k<res[j].length();k++)
+                    for(int k=0;k<cols_eachFile[i];k++)
                     {
-                        Res[pos][start[i]+k] = res[j][k];
+
+                        if(k == identIndex[i])
+                        {
+                           Res[pos][start[i]+k] =("'"+QVariant(res[j][k]).toString());
+                        }
+                        else
+                           Res[pos][start[i]+k] = res[j][k];
                     }
                 }
 
@@ -400,12 +438,12 @@ void MainWindow::addTo()
     range->setProperty("Value", castListListVariant2Variant(Res));
 
     /*格式*/
-    range = pWorksheet->querySubObject("Range(const QString )","G3:G"+QString::number(newRows));
-    range->dynamicCall("SetNumberFormatLocal", "##################");
-    range = pWorksheet->querySubObject("Range(const QString )","FO3:FO"+QString::number(newRows));
-    range->dynamicCall("SetNumberFormatLocal", "##################");
-    range = pWorksheet->querySubObject("Range(const QString )","GJ3:GJ"+QString::number(newRows));
-    range->dynamicCall("SetNumberFormatLocal", "##################");
+//    range = pWorksheet->querySubObject("Range(const QString )","G3:G"+QString::number(newRows));
+//    range->dynamicCall("SetNumberFormatLocal", "##################");
+//    range = pWorksheet->querySubObject("Range(const QString )","FO3:FO"+QString::number(newRows));
+//    range->dynamicCall("SetNumberFormatLocal", "##################");
+//    range = pWorksheet->querySubObject("Range(const QString )","GJ3:GJ"+QString::number(newRows));
+//    range->dynamicCall("SetNumberFormatLocal", "##################");
 
     range = pWorksheet->querySubObject("Range(const QString )","H3:I"+QString::number(newRows));
     range->setProperty("NumberFormatLocal", "yyyy/m/d");
@@ -437,38 +475,36 @@ void MainWindow::addTo()
 /*数据浏览
  * display()
 */
-/*void MainWindow::display(int state)
-{
-    QCheckBox *act=qobject_cast<QCheckBox*>(sender());//使用Qt的类型转换，将指针恢复为QAction类型
-    QString fileName = ((QCheckBox*)act)->text();
-    QString address =  "C:\\excel\\"+filePath[tabIndex[fileName]];
-    QFile f(address);
-    if(state == Qt::Checked)
-    {
-        if(!f.exists())
-        {
-            QMessageBox* box = new QMessageBox;
-            box->setWindowTitle("Notice");
-            box->setText("文件不存在！");
-            box->show();
-            return;
-        }
-        ui->tabWidget->setTabText(tabIndex[fileName],act->text());
-        ExcelEngine excel(address);
-        excel.Open();
-        excel.ReadDataToTable(tableW[fileName]);
-        excel.Close();
-    }
-    if(state == Qt::Unchecked)
-    {
-        tableW[fileName]->clear();
-        tableW[fileName]->setColumnCount(0);
-        tableW[fileName]->setRowCount(0);
-        ui->tabWidget->setTabText(tabIndex[fileName],"");
-    }
-}
-*/
-
+//void MainWindow::display(int state)
+//{
+//    QCheckBox *act=qobject_cast<QCheckBox*>(sender());//使用Qt的类型转换，将指针恢复为QAction类型
+//    QString fileName = ((QCheckBox*)act)->text();
+//    QString address =  "C:\\excel\\"+filePath[tabIndex[fileName]];
+//    QFile f(address);
+//    if(state == Qt::Checked)
+//    {
+//        if(!f.exists())
+//        {
+//            QMessageBox* box = new QMessageBox;
+//            box->setWindowTitle("Notice");
+//            box->setText("文件不存在！");
+//            box->show();
+//            return;
+//        }
+//        ui->tabWidget->setTabText(tabIndex[fileName],act->text());
+//        ExcelEngine excel(address);
+//        excel.Open();
+//        excel.ReadDataToTable(tableW[fileName]);
+//        excel.Close();
+//    }
+//    if(state == Qt::Unchecked)
+//    {
+//        tableW[fileName]->clear();
+//        tableW[fileName]->setColumnCount(0);
+//        tableW[fileName]->setRowCount(0);
+//        ui->tabWidget->setTabText(tabIndex[fileName],"");
+//    }
+//}
 void MainWindow::display(int state)
 {
     QCheckBox *act=qobject_cast<QCheckBox*>(sender());//使用Qt的类型转换，将指针恢复为QAction类型
@@ -495,7 +531,7 @@ void MainWindow::display(int state)
         excel->ReadDataToTable(tableWidget);
         excel->Close();
         delete excel;
-        tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
+//        tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
 
         ui->tabWidget->insertTab(0,tableWidget,fileName);
@@ -522,4 +558,3 @@ void MainWindow::display(int state)
 
     }
 }
-

@@ -34,6 +34,8 @@ private:
     QMap<QVariant,int> keyword; //用来存储各表统一编号(关键字)
     int start[4] = {0,165,186,282};
     int end[4]={164,185,281,309};
+    int cols_eachFile[5]={165,21,96,28,310};
+    int identIndex[4]={6,5,5,-1};
     int keywordPos[4]={1,0,0,1};//关键字在各表字段中的位置
     int firstData[4]={2,1,1,2};//第一条有效数据所在行号
     int namePos[4]={2,1,1,0};//姓名所在位置

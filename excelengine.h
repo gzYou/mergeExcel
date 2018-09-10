@@ -79,6 +79,7 @@ private:
     QVariant var_2;
     QList<QList<QVariant> > res;
 
+
 };
 
 #endif // EXCELENGINE_H

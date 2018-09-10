@@ -58,7 +58,7 @@ ExcelEngine::~ExcelEngine()
 {
     if ( bIsOpen )
     {
-        //析构前，先保存数据，然后关闭workbook
+        //???????????????????????workbook
         Close();
     }
     OleUninitialize();
@@ -66,9 +66,9 @@ ExcelEngine::~ExcelEngine()
 
 
 /**
-  *@brief 打开sXlsFile指定的excel报表
-  *@return true : 打开成功
-  *        false: 打开失败
+  *@brief ????sXlsFile?????excel????
+  *@return true : ?????
+  *        false: ???????
   */
 bool ExcelEngine::Open(UINT nSheet, bool visible)
 {
@@ -111,7 +111,7 @@ bool ExcelEngine::Open(UINT nSheet, bool visible)
         return bIsOpen;
     }
 
-    /*如果指向的文件不存在，则需要新建一个*/
+    /*??????????????????????????????*/
     QFile f(sXlsFile);
     if (!f.exists())
     {
@@ -124,37 +124,37 @@ bool ExcelEngine::Open(UINT nSheet, bool visible)
 
     if (!bIsANewFile)
     {
-        pWorkbooks = pExcel->querySubObject("WorkBooks"); //获取工作簿
-        pWorkbook = pWorkbooks->querySubObject("Open(QString, QVariant)",sXlsFile,QVariant(0)); //打开xls对应的工作簿
+        pWorkbooks = pExcel->querySubObject("WorkBooks"); //?????????
+        pWorkbook = pWorkbooks->querySubObject("Open(QString, QVariant)",sXlsFile,QVariant(0)); //????xls??????????
     }
     else
     {
-        pWorkbooks = pExcel->querySubObject("WorkBooks");     //获取工作簿
-        pWorkbooks->dynamicCall("Add");                       //添加一个新的工作薄
-        pWorkbook  = pExcel->querySubObject("ActiveWorkBook"); //新建一个xls
+        pWorkbooks = pExcel->querySubObject("WorkBooks");     //?????????
+        pWorkbooks->dynamicCall("Add");                       //???????????????
+        pWorkbook  = pExcel->querySubObject("ActiveWorkBook"); //??????xls
     }
 
-    pWorksheet = pWorkbook->querySubObject("WorkSheets(int)", nCurrSheet);//打开第一个sheet
+    pWorksheet = pWorkbook->querySubObject("WorkSheets(int)", nCurrSheet);//???????sheet
 
-    //至此已打开，开始获取相应属性
-    QAxObject *usedrange = pWorksheet->querySubObject("UsedRange");//获取该sheet的使用范围对象
+    //??????????????????????
+    QAxObject *usedrange = pWorksheet->querySubObject("UsedRange");//?????sheet????÷?Χ????
     var = usedrange->dynamicCall("Value");
     QAxObject *rows = usedrange->querySubObject("Rows");
     QAxObject *columns = usedrange->querySubObject("Columns");
 
-    //因为excel可以从任意行列填数据而不一定是从0,0开始，因此要获取首行列下标
-    nStartRow    = usedrange->property("Row").toInt();    //第一行的起始位置
-    nStartColumn = usedrange->property("Column").toInt(); //第一列的起始位置
+    //???excel????????????????????????????0,0????????????????????±?
+    nStartRow    = usedrange->property("Row").toInt();    //????е????λ??
+    nStartColumn = usedrange->property("Column").toInt(); //????е????λ??
 
-    nRowCount    = rows->property("Count").toInt();       //获取行数
-    nColumnCount = columns->property("Count").toInt();    //获取列数
+    nRowCount    = rows->property("Count").toInt();       //???????
+    nColumnCount = columns->property("Count").toInt();    //???????
 
     bIsOpen  = true;
     return bIsOpen;
 }
 
 /**
-  *@brief Open()的重载函数
+  *@brief Open()?????????
   */
 bool ExcelEngine::Open(QString xlsFile, UINT nSheet, bool visible)
 {
@@ -166,7 +166,7 @@ bool ExcelEngine::Open(QString xlsFile, UINT nSheet, bool visible)
 }
 
 /**
-  *@brief 保存表格数据，把数据写入文件
+  *@brief ???????????????????д?????
   */
 void ExcelEngine::Save()
 {
@@ -181,7 +181,7 @@ void ExcelEngine::Save()
         {
             pWorkbook->dynamicCall("Save()");
         }
-        else /*如果该文档是新建出来的，则使用另存为COM接口*/
+        else /*???????????????????????????????COM???*/
         {
             pWorkbook->dynamicCall("SaveAs (const QString&,int,const QString&,const QString&,bool,bool)",
                       sXlsFile,56,QString(""),QString(""),false,false);
@@ -193,11 +193,11 @@ void ExcelEngine::Save()
 }
 
 /**
-  *@brief 关闭前先保存数据，然后关闭当前Excel COM对象，并释放内存
+  *@brief ??????????????????????Excel COM????????????
   */
 void ExcelEngine::Close()
 {
-    //关闭前先保存数据
+    //?????????????
     Save();
 
     if ( pExcel && pWorkbook )
@@ -216,10 +216,10 @@ void ExcelEngine::Close()
 }
 
 /**
-  *@brief 把tableWidget中的数据保存到excel中
-  *@param tableWidget : 指向GUI中的tablewidget指针
-  *@return 保存成功与否 true : 成功
-  *                  false: 失败
+  *@brief ??tableWidget?е????????excel??
+  *@param tableWidget : ???GUI?е?tablewidget???
+  *@return ??????????? true : ???
+  *                  false: ???
   */
 bool ExcelEngine::SaveDataFrTable(QTableWidget *tableWidget)
 {
@@ -235,7 +235,7 @@ bool ExcelEngine::SaveDataFrTable(QTableWidget *tableWidget)
     int tableR = tableWidget->rowCount();
     int tableC = tableWidget->columnCount();
 
-    //获取表头写做第一行
+    //??????д???????
     for (int i=0; i<tableC; i++)
     {
         if ( tableWidget->horizontalHeaderItem(i) != NULL )
@@ -244,7 +244,7 @@ bool ExcelEngine::SaveDataFrTable(QTableWidget *tableWidget)
         }
     }
 
-    //写数据
+    //д????
     for (int i=0; i<tableR; i++)
     {
         for (int j=0; j<tableC; j++)
@@ -256,7 +256,7 @@ bool ExcelEngine::SaveDataFrTable(QTableWidget *tableWidget)
         }
     }
 
-    //保存
+    //????
     Save();
 
     return true;
@@ -280,10 +280,10 @@ void ExcelEngine::castVariant2ListListVariant()
 }
 
 /**
-  *@brief 从指定的xls文件中把数据导入到tableWidget中
-  *@param tableWidget : 执行要导入到的tablewidget指针
-  *@return 导入成功与否 true : 成功
-  *                   false: 失败
+  *@brief ???????xls????а????????tableWidget??
+  *@param tableWidget : ??????????tablewidget???
+  *@return ??????????? true : ???
+  *                   false: ???
   */
 bool ExcelEngine::ReadDataToTable(QTableWidget *tableWidget)
 {
@@ -295,7 +295,7 @@ bool ExcelEngine::ReadDataToTable(QTableWidget *tableWidget)
     castVariant2ListListVariant();
     tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
-    //先把table的内容清空
+    //???table??????????
     int tableColumn = tableWidget->columnCount();
     tableWidget->clear();
     for (int n=0; n<tableColumn; n++)
@@ -306,24 +306,24 @@ bool ExcelEngine::ReadDataToTable(QTableWidget *tableWidget)
 //    int rowcnt    = nStartRow + nRowCount;
 //    int columncnt = nStartColumn + nColumnCount;
 
-    //获取excel中的第一行数据作为表头
+    //???excel?е???????????????
     QStringList headerList;
     for (int n = 0; n<res[0].length(); n++ )
     {
         headerList<<res[0][n].toString();
     }
-    //重新创建表头
+    //??????????
     tableWidget->setColumnCount(nColumnCount);
     tableWidget->setHorizontalHeaderLabels(headerList);
 
 
-    //插入新数据
+    //??????????
     if(res.length()>0)
     {
-        for (int i = 1, r=0; i < res.length(); i++,r++ )  //行
+        for (int i = 1, r=0; i < res.length(); i++,r++ )  //??
         {
-            tableWidget->insertRow(r); //插入新行
-            for (int j = 0; j < nColumnCount; j++ )  //列
+            tableWidget->insertRow(r); //????????
+            for (int j = 0; j < nColumnCount; j++ )  //??
             {
                 tableWidget->setItem(r,j,new QTableWidgetItem(res[i][j].toString()));
             }
@@ -331,21 +331,22 @@ bool ExcelEngine::ReadDataToTable(QTableWidget *tableWidget)
 
     }
 
+
     return true;
 }
 
 
 /**
-  *@brief 获取指定单元格的数据
-  *@param row : 单元格的行号
-  *@param column : 单元格的列号
-  *@return [row,column]单元格对应的数据
+  *@brief ?????????????????
+  *@param row : ????????к?
+  *@param column : ????????к?
+  *@return [row,column]??????????????
   */
 QVariant ExcelEngine::GetCellData(UINT row, UINT column)
 {
     QVariant data;
 
-    QAxObject *cell = pWorksheet->querySubObject("Cells(int,int)",row,column);//获取单元格对象
+    QAxObject *cell = pWorksheet->querySubObject("Cells(int,int)",row,column);//????????????
     if ( cell )
     {
         data = cell->dynamicCall("Value2()");
@@ -355,22 +356,22 @@ QVariant ExcelEngine::GetCellData(UINT row, UINT column)
 }
 
 /**
-  *@brief 修改指定单元格的数据
-  *@param row : 单元格的行号
-  *@param column : 单元格指定的列号
-  *@param data : 单元格要修改为的新数据
-  *@return 修改是否成功 true : 成功
-  *                   false: 失败
+  *@brief ?????????????????
+  *@param row : ????????к?
+  *@param column : ???????????к?
+  *@param data : ??????????????????
+  *@return ????????? true : ???
+  *                   false: ???
   */
 bool ExcelEngine::SetCellData(UINT row, UINT column, QVariant data)
 {
     bool op = false;
 
-    QAxObject *cell = pWorksheet->querySubObject("Cells(int,int)",row,column);//获取单元格对象
+    QAxObject *cell = pWorksheet->querySubObject("Cells(int,int)",row,column);//????????????
     if ( cell )
     {
-        QString strData = data.toString(); //excel 居然只能插入字符串和整型，浮点型无法插入
-        cell->dynamicCall("SetValue(const QVariant&)",strData); //修改单元格的数据
+        QString strData = data.toString(); //excel ??????????????????????????????????
+        cell->dynamicCall("SetValue(const QVariant&)",strData); //?????????????
         op = true;
     }
     else
@@ -382,7 +383,7 @@ bool ExcelEngine::SetCellData(UINT row, UINT column, QVariant data)
 }
 
 /**
-  *@brief 清空除报表之外的数据
+  *@brief ??????????????????
   */
 void ExcelEngine::Clear()
 {
@@ -394,9 +395,9 @@ void ExcelEngine::Clear()
 }
 
 /**
-  *@brief 判断excel是否已被打开
-  *@return true : 已打开
-  *        false: 未打开
+  *@brief ?ж?excel??????????
+  *@return true : ?????
+  *        false: δ????
   */
 bool ExcelEngine::IsOpen()
 {
@@ -404,9 +405,9 @@ bool ExcelEngine::IsOpen()
 }
 
 /**
-  *@brief 判断excel COM对象是否调用成功，excel是否可用
-  *@return true : 可用
-  *        false: 不可用
+  *@brief ?ж?excel COM??????????ó????excel???????
+  *@return true : ????
+  *        false: ??????
   */
 bool ExcelEngine::IsValid()
 {
@@ -414,7 +415,7 @@ bool ExcelEngine::IsValid()
 }
 
 /**
-  *@brief 获取excel的行数
+  *@brief ???excel??????
   */
 UINT ExcelEngine::GetRowCount()const
 {
@@ -422,7 +423,7 @@ UINT ExcelEngine::GetRowCount()const
 }
 
 /**
-  *@brief 获取excel的列数
+  *@brief ???excel??????
   */
 UINT ExcelEngine::GetColumnCount()const
 {
